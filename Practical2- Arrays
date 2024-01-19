@@ -1,0 +1,233 @@
+Problem Statement:  . Write a program to read an integer 1D array containing 8 bits (0s, 1s) of an unsigned binary integer. The program should print the decimal value for the integer.
+Algorithm: 
+1. Start
+2. Input the binary number.
+3. Multiply each digit of the binary number with the power of 2 and add each multiplication
+result. The power starts from 0 to n-1 where n is the total number of digits in the binary
+number.
+4. End
+Source Code:  
+#include <stdio.h>
+int main() {
+    int binaryArray[8];
+    printf("Enter an 8-bit binary integer: ");
+    for (int i = 0; i < 8; i++) {
+        scanf("%1d", &binaryArray[i]);
+    }
+
+    int decimalValue = 0;
+    for (int i = 7; i >= 0; i--) {
+        decimalValue += binaryArray[i] << (7 - i);
+    }
+    printf("Decimal value: %d\n", decimalValue);
+    return 0;
+}
+
+Problem Statement:
+Currency notes are available in the following seven denominations: Rs. 1, Rs. 2, Rs. 5, Rs. 10, Rs. 20,Rs. 50, and Rs. 100. You will first read an integer array (named purse [7]) of seven elements, where the array elements represents the number of notes of each denomination (in increasing order of denomination) available with you. You are also given an amount of money to be paid using these notes. The amount will be less than Rs. 1000. You have to pay the amount using minimum number of notes. Print the number of notes of each denomination which you will use to pay the amount. If the amount cannot be paid using the available notes, print “Failed to Pay”.
+Algorithm:
+1. Start
+2. Sort the array of coins in decreasing order.
+3. Initialize ans vector as empty.
+4. Find the largest denomination that is smaller than remaining amount and while it is smaller than the remaining amount:
+5. Add found denomination to ans. Subtract value of found denomination from amount.
+6. If amount becomes 0, then print ans.
+7. End
+Source Code:  
+#include <stdio.h>
+int main() {
+    int purse[7];
+    printf("Enter the number of notes for each denomination:\n");
+    for (int i = 0; i < 7; i++) {
+        printf("Number of Rs. %d notes: ", (1 << i));
+        scanf("%d", &purse[i]);
+    }
+    int amount;
+    printf("Enter the amount to be paid (less than Rs. 1000): ");
+    scanf("%d", &amount);
+    int notesUsed[7] = {0};
+    int remainingAmount = amount;
+    for (int i = 6; i >= 0; i--) {
+        notesUsed[i] = remainingAmount / (1 << i);
+        if (notesUsed[i] > purse[i]) {
+            notesUsed[i] = purse[i];
+        }
+        remainingAmount -= notesUsed[i] * (1 << i);
+    }
+    if (remainingAmount == 0) {
+        printf("Number of notes to be used for each denomination:\n");
+        for (int i = 6; i >= 0; i--) {
+            if (notesUsed[i] > 0) {
+                printf("Rs. %d notes: %d\n", (1 << i), notesUsed[i]);
+            }
+        }
+    } else {
+        printf("Failed to Pay\n");
+    }
+    return 0;
+}
+
+ 
+Problem Statement:
+Write C functions to perform the following operations with two-dimensional arrays.
+i) Reading any two dimensional array elements.
+ii) Finding maximum and standard deviation of array elements.
+iii) Printing the transpose of a matrix
+Algorithm:
+1. Start
+2. Declare a two-dimensional array arr[MAX_ROWS][MAX_COLS]
+3. Input the number of rows (rows) and columns (cols)
+4. Check if (rows <= MAX_ROWS) and (cols <= MAX_COLS), else return an error
+5. Initialize a loop for i from 0 to rows-1
+6. Initialize a nested loop for j from 0 to cols-1
+7. Input arr[i][j]
+8. End nested loop
+9. End loop
+10. End
+Max Value Standard deviation:
+1. Start
+2. Declare a two-dimensional array arr[MAX_ROWS][MAX_COLS]
+3. Declare variables maxElement, sum, mean, and stddev
+4. Input the number of rows (rows) and columns (cols)
+5. Check if (rows <= MAX_ROWS) and (cols <= MAX_COLS), else return an error
+6. Initialize maxElement to arr[0][0]
+7. Initialize sum to 0.0
+8. Initialize a loop for i from 0 to rows-1
+9. Initialize a nested loop for j from 0 to cols-1
+10. If arr[i][j] > maxElement, update maxElement to arr[i][j]
+11. Add arr[i][j] to sum
+12. End nested loop
+13. End loop
+14. Calculate mean as sum / (rows * cols)
+15. Initialize stddev to 0.0
+
+16. Initialize a loop for i from 0 to rows-1
+17. Initialize a nested loop for j from 0 to cols-1
+18. Add pow(arr[i][j] - mean, 2) to stddev
+19. End nested loop
+20. End loop
+21. Calculate stddev as sqrt(stddev / (rows * cols))
+22. Output maxElement and stddev
+23. End
+Transpose:
+1. Start
+2. Declare a two-dimensional array arr[MAX_ROWS][MAX_COLS]
+3. Input the number of rows (rows) and columns (cols)
+4. Check if (rows <= MAX_ROWS) and (cols <= MAX_COLS), else return an error
+5. Initialize a loop for i from 0 to rows-1
+6. Initialize a nested loop for j from 0 to cols-1
+7. Input arr[i][j]
+8. End nested loop
+9. End loop
+10. Output "Transpose of the matrix:"
+11. Initialize a loop for j from 0 to cols-1
+12. Initialize a nested loop for i from 0 to rows-1
+13. Output arr[i][j] followed by a space
+14. End nested loop
+15. Output a newline
+16. End loop
+17. End
+Source Code:  
+#include <stdio.h>
+#include <math.h>
+void readArray(int arr[][100], int rows, int cols) {
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+}
+void findMaxAndStdDev(int arr[][100], int rows, int cols) {
+    int maxElement = arr[0][0];
+    double sum = 0.0, mean, stdDev;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (arr[i][j] > maxElement) {
+                maxElement = arr[i][j];
+            }
+            sum += arr[i][j];
+        }
+    }
+    mean = sum / (rows * cols);
+    sum = 0.0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            sum += pow(arr[i][j] - mean, 2);
+        }
+    }
+    stdDev = sqrt(sum / (rows * cols));
+    printf("Maximum element: %d\n", maxElement);
+    printf("Standard Deviation: %lf\n", stdDev);
+}
+void printTranspose(int arr[][100], int rows, int cols) {
+    printf("Transpose of the matrix:\n");
+    for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+            printf("%d\t", arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+int main() {
+    int rows, cols;
+    printf("Enter the number of rows and columns of the array: ");
+    scanf("%d %d", &rows, &cols);
+    int arr[100][100];
+    readArray(arr, rows, cols);
+    findMaxAndStdDev(arr, rows, cols);
+    printTranspose(arr, rows, cols);
+    return 0;
+}
+#include <stdio.h>
+#include <math.h>
+
+void readArray(int arr[][100], int rows, int cols) {
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+}
+void findMaxAndStdDev(int arr[][100], int rows, int cols) {
+    int maxElement = arr[0][0];
+    double sum = 0.0, mean, stdDev;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (arr[i][j] > maxElement) {
+                maxElement = arr[i][j];
+            }
+            sum += arr[i][j];
+        }
+    }
+    mean = sum / (rows * cols);
+    sum = 0.0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            sum += pow(arr[i][j] - mean, 2);
+        }
+    }
+    stdDev = sqrt(sum / (rows * cols));
+    printf("Maximum element: %d\n", maxElement);
+    printf("Standard Deviation: %lf\n", stdDev);
+}
+void printTranspose(int arr[][100], int rows, int cols) {
+    printf("Transpose of the matrix:\n");
+    for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+            printf("%d\t", arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+int main() {
+    int rows, cols;
+    printf("Enter the number of rows and columns of the array: ");
+    scanf("%d %d", &rows, &cols);
+    int arr[100][100];
+    readArray(arr, rows, cols);
+    findMaxAndStdDev(arr, rows, cols);
+    printTranspose(arr, rows, cols);
+    return 0;
+}
