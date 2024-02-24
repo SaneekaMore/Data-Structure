@@ -1,0 +1,66 @@
+Write a function deletesecond() to delete the second node of the list, given “head” which points to the first element of the list. Assume that there are at least two nodes on the list.
+
+Code:
+public class SinglyLinkedList {
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    Node head;
+
+    public void insert(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    public void deleteSecond() {
+        if (head == null || head.next == null) {
+            return; // No second node
+        }
+        head.next = head.next.next;
+    }
+
+    public void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.insert(1);
+        list.insert(2);
+        list.insert(3);
+        list.insert(4);
+
+        System.out.println("Original list:");
+        list.display();
+
+        list.deleteSecond();
+
+        System.out.println("List after deleting second node:");
+        list.display();
+    }
+}
+
+1. Start at the head of the linked list.
+2. Check if the head is null or if the head's next node is null. If either condition is true, return, as there are not enough nodes to delete the second node.
+3. Move the head pointer to the node after the next node (i.e., head.next.next).
+4. Return, as the second node has been deleted.
