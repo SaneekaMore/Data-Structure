@@ -1,0 +1,210 @@
+Q.1) Design, Develop and Implement a menu driven Program for the following operations on Doubly Linked List (DLL) of Employee Data with the fields: SSN, Name, Dept, Designation, Sal, PhNo
+a)         Create a DLL of N Employees Data by using end insertion.
+b)         Display the status of DLL and count the number of nodes in it
+c)         Perform Insertion and Deletion at End of DLL
+d)         Perform Insertion and Deletion at Front of DLL.
+
+Source Code:
+import java.util.Scanner;
+
+class Employee {
+    String ssn;
+    String name;
+    String dept;
+    String designation;
+    double sal;
+    String phNo;
+
+    public Employee(String ssn, String name, String dept, String designation, double sal, String phNo) {
+        this.ssn = ssn;
+        this.name = name;
+        this.dept = dept;
+        this.designation = designation;
+        this.sal = sal;
+        this.phNo = phNo;
+    }
+
+    @Override
+    public String toString() {
+        return "SSN: " + ssn + ", Name: " + name + ", Dept: " + dept + ", Designation: " + designation + ", Salary: " + sal + ", Phone: " + phNo;
+    }
+}
+
+class Node {
+    Employee emp;
+    Node prev;
+    Node next;
+
+    public Node(Employee emp) {
+        this.emp = emp;
+    }
+}
+
+public class DoublyLinkedListMenu {
+    Node head;
+    Node tail;
+    int size;
+
+    public DoublyLinkedListMenu() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public void insertEnd(Employee emp) {
+        Node newNode = new Node(emp);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void deleteEnd() {
+        if (tail == null) {
+            System.out.println("DLL is empty");
+            return;
+        }
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            tail = tail.prev;
+            tail.next = null;
+        }
+        size--;
+    }
+
+    public void insertFront(Employee emp) {
+        Node newNode = new Node(emp);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+
+    public void deleteFront() {
+        if (head == null) {
+            System.out.println("DLL is empty");
+            return;
+        }
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            head = head.next;
+            head.prev = null;
+        }
+        size--;
+    }
+
+    public void display() {
+        if (head == null) {
+            System.out.println("DLL is empty");
+            return;
+        }
+        Node current = head;
+        while (current != null) {
+            System.out.println(current.emp);
+            current = current.next;
+        }
+    }
+
+    public void displayStatus() {
+        System.out.println("Number of nodes: " + size);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DoublyLinkedListMenu dll = new DoublyLinkedListMenu();
+        int choice;
+        do {
+            System.out.println("\n1. Create a DLL of N Employees Data by using end insertion");
+            System.out.println("2. Display the status of DLL and count the number of nodes in it");
+            System.out.println("3. Perform Insertion at End of DLL");
+            System.out.println("4. Perform Deletion at End of DLL");
+            System.out.println("5. Perform Insertion at Front of DLL");
+            System.out.println("6. Perform Deletion at Front of DLL");
+            System.out.println("7. Display DLL");
+            System.out.println("8. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the number of employees: ");
+                    int n = scanner.nextInt();
+                    for (int i = 0; i < n; i++) {
+                        System.out.print("Enter SSN: ");
+                        String ssn = scanner.next();
+                        System.out.print("Enter Name: ");
+                        String name = scanner.next();
+                        System.out.print("Enter Dept: ");
+                        String dept = scanner.next();
+                        System.out.print("Enter Designation: ");
+                        String designation = scanner.next();
+                        System.out.print("Enter Salary: ");
+                        double sal = scanner.nextDouble();
+                        System.out.print("Enter Phone: ");
+                        String phNo = scanner.next();
+                        dll.insertEnd(new Employee(ssn, name, dept, designation, sal, phNo));
+                    }
+                    break;
+                case 2:
+                    dll.displayStatus();
+                    break;
+                case 3:
+                    System.out.print("Enter SSN: ");
+                    String ssn = scanner.next();
+                    System.out.print("Enter Name: ");
+                    String name = scanner.next();
+                    System.out.print("Enter Dept: ");
+                    String dept = scanner.next();
+                    System.out.print("Enter Designation: ");
+                    String designation = scanner.next();
+                    System.out.print("Enter Salary: ");
+                    double sal = scanner.nextDouble();
+                    System.out.print("Enter Phone: ");
+                    String phNo = scanner.next();
+                    dll.insertEnd(new Employee(ssn, name, dept, designation, sal, phNo));
+                    break;
+                case 4:
+                    dll.deleteEnd();
+                    break;
+                case 5:
+                    System.out.print("Enter SSN: ");
+                    String ssnFront = scanner.next();
+                    System.out.print("Enter Name: ");
+                    String nameFront = scanner.next();
+                    System.out.print("Enter Dept: ");
+                    String deptFront = scanner.next();
+                    System.out.print("Enter Designation: ");
+                    String designationFront = scanner.next();
+                    System.out.print("Enter Salary: ");
+                    double salFront = scanner.nextDouble();
+                    System.out.print("Enter Phone: ");
+                    String phNoFront = scanner.next();
+                    dll.insertFront(new Employee(ssnFront, nameFront, deptFront, designationFront, salFront, phNoFront));
+                    break;
+                case 6:
+                    dll.deleteFront();
+                    break;
+                case 7:
+                    dll.display();
+                    break;
+                case 8:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+                    break;
+            }
+        } while (choice != 8);
+        scanner.close();
+    }
+}
+New File at / · SaneekaMore/Data-Structure
