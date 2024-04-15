@@ -1,0 +1,68 @@
+import java.util.Scanner;
+
+public class CityGraph {
+    static final int MAX_CITIES = 100;
+
+    // Function to create a graph using adjacency matrix
+    static void createGraph(int[][] cities, int n) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the adjacency matrix for the graph:");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("Enter row %d (separate elements with space): ", i + 1);
+            for (int j = 0; j < n; j++) {
+                cities[i][j] = scanner.nextInt();
+            }
+        }
+    }
+
+    // Depth First Search (DFS) for traversal
+    static void DFS(int[][] cities, boolean[] visited, int n, int start) {
+        visited[start] = true;
+        System.out.print((start + 1) + " "); // Printing the node
+        for (int i = 0; i < n; i++) {
+            if (cities[start][i] == 1 && !visited[i]) {
+                DFS(cities, visited, n, i); // Recursively visit adjacent nodes
+            }
+        }
+    }
+
+    // Breadth First Search (BFS) for traversal
+    static void BFS(int[][] cities, boolean[] visited, int n, int start) {
+        int[] queue = new int[MAX_CITIES];
+        int front = -1, rear = -1;
+        queue[++rear] = start;
+        visited[start] = true;
+        while (front != rear) {
+            int currentNode = queue[++front];
+            System.out.print((currentNode + 1) + " "); // Printing the node
+            for (int i = 0; i < n; i++) {
+                if (cities[currentNode][i] == 1 && !visited[i]) {
+                    queue[++rear] = i;
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[][] cities = new int[MAX_CITIES][MAX_CITIES];
+        int n, startNode;
+        boolean[] visited = new boolean[MAX_CITIES];
+        System.out.printf("Enter the number of cities (maximum %d): ", MAX_CITIES);
+        n = scanner.nextInt();
+        createGraph(cities, n);
+        System.out.printf("Enter the starting city node (1 to %d): ", n);
+        startNode = scanner.nextInt();
+        startNode--; // Adjusting for zero-based indexing
+        System.out.print("Nodes reachable from city " + (startNode + 1) + " using DFS: ");
+        DFS(cities, visited, n, startNode);
+        // Reset visited array
+        for (int i = 0; i < MAX_CITIES; i++) {
+            visited[i] = false;
+        }
+        System.out.print("\nNodes reachable from city " + (startNode + 1) + " using BFS: ");
+        BFS(cities, visited, n, startNode);
+        System.out.println();
+    }
+}
