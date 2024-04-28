@@ -1,0 +1,110 @@
+Problem Statement: Given a File of N employee records with a set K of Keys(4-digit) which uniquely determine the records in file F. Assume that file F is maintained in memory by a Hash Table(HT) of ‘m’ memory locations with L as the set of memory addresses (2-digit) of locations in HT. Let the keys in K and addresses in L are Integers. Design and develop a program that uses Hash function H: K → L as H(K)=K mod m (remainder method), and implement hashing technique to map a given key K to the address space L. Resolve the collision (if any) using linear probing.
+Algorithm: 
+Class Definitions:
+Define a class EmployeeRecord with attributes name and key.
+Define a class HashTable with attributes table (an array of EmployeeRecord), size, and methods for hashing, inserting, searching, and displaying records.
+Hash Function:
+Implement a hash function that calculates the index based on the key value (key % size).
+Insertion:
+To insert a record, hash the key to get the initial index.
+If the slot at the index is occupied, use linear probing (increment the index by 1 and wrap around if necessary) until an empty slot is found.
+Insert the record into the empty slot.
+Search:
+To search for a record, hash the key to get the initial index.
+If the slot at the index is not empty and the key matches, return the record.
+If the slot is empty or the key does not match, use linear probing until finding a matching key or an empty slot.
+Display:
+Display the hash table by iterating through all memory locations.
+For each occupied slot, print the index, name, and key of the record.
+Main Function:
+Create a HashTable object with a specified number of memory locations.
+Insert some example EmployeeRecord objects into the hash table.
+Display the hash table.
+Search for a record with a specific key and print the result.
+EmployeeRecord Class:
+Define a constructor to initialize name and key.
+Define getter methods for name and key attributes.
+Main Class:
+Create a HashTable object and perform insertion, display, and search operations.
+
+Source Code:
+
+import java.util.Arrays;
+
+class HashTable {
+    private final EmployeeRecord[] table;
+    private final int size;
+
+    public HashTable(int m) {
+        size = m;
+        table = new EmployeeRecord[100];
+    }
+
+    private int hashFunction(int key) {
+        return key % size;
+    }
+
+    public void insert(EmployeeRecord record) {
+        int index = hashFunction(record.getKey());
+        while (table[index] != null) {
+            index = (index + 1) % size;
+        }
+        table[index] = record;
+    }
+
+    public EmployeeRecord search(int key) {
+        int index = hashFunction(key);
+        while (table[index] != null && table[index].getKey() != key) {
+            index = (index + 1) % size;
+        }
+        return table[index];
+    }
+
+    public void display() {
+        System.out.println("HashTable:");
+        for (int i = 0; i < size; i++) {
+            if (table[i] != null) {
+                System.out.println("[" + i + "]: " + table[i].getName() + " (Key: " + table[i].getKey() + ")");
+            }
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int m = 3;
+        HashTable ht = new HashTable(m);
+
+        ht.insert(new EmployeeRecord("John Doe", 1234));
+        ht.insert(new EmployeeRecord("Jane Smith", 5678));
+        ht.insert(new EmployeeRecord("Alice Johnson", 9012));
+
+        ht.display();
+
+        int searchKey = 5678;
+        EmployeeRecord result = ht.search(searchKey);
+        if (result != null) {
+            System.out.println("Record found: " + result.getName() + " (Key: " + result.getKey() + ")");
+        } else {
+            System.out.println("Record not found for key " + searchKey);
+        }
+    }
+}
+
+class EmployeeRecord {
+    private final String name;
+    private final int key;
+
+    public EmployeeRecord(String name, int key) {
+        this.name = name;
+        this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getKey() {
+        return key;
+    }
+}
